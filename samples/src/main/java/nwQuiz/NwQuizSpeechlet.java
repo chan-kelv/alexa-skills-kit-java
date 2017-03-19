@@ -72,9 +72,10 @@ public class NwQuizSpeechlet implements Speechlet {
         else if ("StartQuiz".equals(intentName)){
             return nwHelper.StartQuizIntent();
         }
-//        else if ("startQuiz".equals(intentName)){
-//            return nwHelper.StartQuizIntent();
-//        }
+        else if ("Answer".equals(intentName)){
+            return nwHelper.PlayerAnswer(intent);
+
+        }
         else {
             PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
             speech.setText("Lets quiz!");

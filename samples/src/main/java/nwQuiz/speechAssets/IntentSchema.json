@@ -1,0 +1,41 @@
+{
+  "intents": [
+    {
+      "intent": "NwQuiz"
+    },
+    {
+      "intent": "GetReady"
+    },
+    {
+      "intent": "ImReady"
+    },
+    {
+      "intent": "SetPlayerName",
+      "slots": [
+        {
+          "name": "PlayerName",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "SayPlayerName"
+    },
+    {
+      "intent": "StartQuiz"
+    },
+    {
+      "intent":"Answer",
+      "slots":
+      [
+        {
+          "name":"PlayerAnswer",
+          "type":"LIST_OF_ANSWERS"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    }
+  ]
+}

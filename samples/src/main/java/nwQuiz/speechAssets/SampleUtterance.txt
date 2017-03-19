@@ -1,0 +1,12 @@
+NwQuiz bubblegum
+GetReady get ready
+ImReady I'm ready
+SetPlayerName set player name
+SetPlayerName set {PlayerName}
+SetPlayerName set
+SayPlayerName tell me who is playing
+StartQuiz start
+Answer Who is {PlayerAnswer}
+Answer What is {PlayerAnswer}
+Answer When is {PlayerAnswer}
+Answer Where is {PlayerAnswer}
