@@ -29,7 +29,6 @@ public class NwQuizSpeechlet implements Speechlet {
                 session.getSessionId());
 
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        speech.setText("Hello 2017 nw hack! Glad to have you here today.");
         speech.setText("Hello NW hack 2017! Are you ready to battle?");
 
         // Create the Simple card content.
@@ -57,9 +56,6 @@ public class NwQuizSpeechlet implements Speechlet {
         if ("SetPlayerName".equals(intentName)){
             return nwHelper.SetPlayerNameIntent(intent);
         }
-//        else if ("SetPoints".equals(intentName)){
-//            return nwHelper.SetPointsToPlayTo(intent);
-//        }
         else if ("Instructions".equals(intentName)){
             return nwHelper.InstructionsIntent();
         }
@@ -69,16 +65,12 @@ public class NwQuizSpeechlet implements Speechlet {
         else if ("StartQuiz".equals(intentName)){
             return nwHelper.StartQuizIntent();
         }
-//        else if ("Answer".equals(intentName)){
-//            return nwHelper.PlayerAnswer(intent);
-//
-//        }
         else if ("AnswerBattle".equals(intentName)){
             return nwHelper.AnswerBattle(intent);
         }
         else {
             PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-            speech.setText("Lets quiz!");
+            speech.setText("I did not understand that, please say again");
 
             Reprompt reprompt = new Reprompt();
             reprompt.setOutputSpeech(speech);

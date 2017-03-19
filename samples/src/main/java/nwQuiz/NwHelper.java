@@ -34,68 +34,6 @@ public class NwHelper {
         currentPlayerName = "not set";
     }
 
-//    public SpeechletResponse PrepPlayersIntent() {
-//        if (!arePlayersReady){
-//            SimpleCard card = new SimpleCard();
-//            card.setTitle("Players get ready!");
-//            card.setContent("Ready?");
-//
-//            PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//            speech.setText("Players are you ready to quiz?");
-//
-//            // Create reprompt
-//            PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-//            repromptSpeech.setText("Players get ready to quiz");
-//            Reprompt reprompt = new Reprompt();
-//            reprompt.setOutputSpeech(repromptSpeech);
-//
-//            return SpeechletResponse.newAskResponse(speech, reprompt, card);
-//        }
-//        else{
-//            return StartQuizIntent();
-//        }
-//    }
-//
-//    public SpeechletResponse ImReadyIntent(){
-//        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        speech.setText("I'm ready too, lets go!");
-//        return SpeechletResponse.newTellResponse(speech);
-//    }
-//
-//    public SpeechletResponse PlayersReadyIntent(){
-//        arePlayersReady = true;
-//        return ImReadyIntent();
-//    }
-//
-//    public SpeechletResponse SayPlayerNameIntent(){
-//        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        speech.setText("Welcome" + currentPlayerName);
-//        return SpeechletResponse.newTellResponse(speech);
-//    }
-//
-//    public SpeechletResponse SetPointsToPlayTo(Intent intent){
-//        String pointsString = intent.getSlot("Points").getValue();
-//        String message;
-//        try {
-//            winPoints = Integer.parseInt(pointsString);
-//            message = "This game will go to " + winPoints;
-//        }
-//        catch (NumberFormatException e){
-//            winPoints = 3;
-//            message = "Could not change points. Game will go to 3";
-//        }
-//
-//        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        speech.setText(message);
-//
-//        PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-//        repromptSpeech.setText("Please set players");
-//        Reprompt reprompt = new Reprompt();
-//        reprompt.setOutputSpeech(repromptSpeech);
-//
-//        return SpeechletResponse.newAskResponse(speech, reprompt);
-//    }
-
     public SpeechletResponse InstructionsIntent(){
         String speechText = "I will ask you a trivia question. Respond with your name, followed by the answer. " +
                 "First person to " + winPoints + " points win!";
@@ -151,6 +89,18 @@ public class NwHelper {
     }
 
     public SpeechletResponse StartQuizIntent(){
+        if (playerName1 == null || playerName2 == null) {
+            String speechText = "Player names have not been set yet. Please set them first using Set playername one and two";
+            PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+            speech.setText(speechText);
+
+            PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
+            repromptSpeech.setText(speechText);
+            Reprompt reprompt = new Reprompt();
+            reprompt.setOutputSpeech(repromptSpeech);
+
+            return SpeechletResponse.newAskResponse(speech, reprompt);
+        }
         String message = "could not get questions";
         try {
             StringBuilder result = new StringBuilder();
@@ -173,7 +123,6 @@ public class NwHelper {
         }
 
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        speech.setText(currentPlayerName + "," + message);
         speech.setText(message);
 
         SimpleCard card = new SimpleCard();
@@ -187,49 +136,6 @@ public class NwHelper {
 
         return SpeechletResponse.newAskResponse(speech, reprompt, card);
     }
-
-//    public SpeechletResponse PlayerAnswer(Intent intent){
-//        String playerAnswer = intent.getSlot("PlayerAnswer").getValue();
-//
-//        SimpleCard card = new SimpleCard();
-//        card.setTitle(currentPlayerName + "'s Answer");
-//        card.setContent(playerAnswer);
-//
-//        String speechText;
-//        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-//        if (currentQuestion.definition.equals(playerAnswer)){
-//            speechText = currentPlayerName +" is correct!";
-//            if(currentPlayerName.equals(playerName1)){
-//                player1Point++;
-//                if(player1Point == 3){
-//                    speech.setText("Congratulations " + playerName1 + "You have won!");
-//                    return SpeechletResponse.newTellResponse(speech, card);
-//                }
-//            }
-//            else{
-//                player2Point++;
-//                if(player1Point == 3){
-//                    speech.setText("Congratulations " + playerName2 + "You have won!");
-//                    return SpeechletResponse.newTellResponse(speech, card);
-//                }
-//            }
-//        }
-//        else{
-//            speechText = currentPlayerName +" is incorrect! The correct answer is " + currentQuestion.definition;
-//        }
-//
-//        //switch players
-//        currentPlayerName = currentPlayerName.equals(playerName1)? playerName2 : playerName1;
-//        int currentPoints = currentPlayerName.equals(playerName1)? player1Point : player2Point;
-//
-//        speech.setText(speechText +". You have " + currentPoints +" points. " + currentPlayerName + "are you ready?" );
-//
-//        PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
-//        repromptSpeech.setText(currentPlayerName + "are you ready?");
-//        Reprompt reprompt = new Reprompt();
-//        reprompt.setOutputSpeech(repromptSpeech);
-//        return SpeechletResponse.newAskResponse(speech, reprompt, card);
-//    }
 
     public SpeechletResponse AnswerBattle(Intent intent){
         String playerName = intent.getSlot("PlayerName").getValue();
@@ -278,12 +184,6 @@ public class NwHelper {
         else{
             speechText = foundPlayer + "said" + playerAnswer+"The correct answer is ," + currentQuestion.definition;
         }
-
-        //switch players
-//        currentPlayerName = currentPlayerName.equals(playerName1)? playerName2 : playerName1;
-//        int currentPoints = currentPlayerName.equals(playerName1)? player1Point : player2Point;
-
-//        speech.setText(speechText +". You have " + currentPoints +" points. " + currentPlayerName + "are you ready?" );
         speech.setText(speechText
                         + playerName1 +"has " + player1Point + "points,"
                         + playerName2 +"has "+ player2Point +"points,"

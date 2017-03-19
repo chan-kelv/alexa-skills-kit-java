@@ -7,25 +7,15 @@
 
     or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-import helloworld.HelloWorldSpeechlet;
-
-import org.apache.log4j.BasicConfigurator;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-
-import session.SessionSpeechlet;
-
 import com.amazon.speech.Sdk;
 import com.amazon.speech.speechlet.Speechlet;
 import com.amazon.speech.speechlet.servlet.SpeechletServlet;
+import nwQuiz.NwQuizSpeechlet;
+import org.apache.log4j.BasicConfigurator;
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 /**
  * Shared launcher for executing all sample skills within a single servlet container.
@@ -84,8 +74,8 @@ public final class Launcher {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
-        context.addServlet(new ServletHolder(createServlet(new HelloWorldSpeechlet())), "/hello");
-        context.addServlet(new ServletHolder(createServlet(new SessionSpeechlet())), "/session");
+        context.addServlet(new ServletHolder(createServlet(new NwQuizSpeechlet())), "/hello");
+        context.addServlet(new ServletHolder(createServlet(new NwQuizSpeechlet())), "/session");
         server.start();
         server.join();
     }
