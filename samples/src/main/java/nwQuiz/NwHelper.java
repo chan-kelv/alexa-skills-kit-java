@@ -22,12 +22,11 @@ public class NwHelper {
     boolean arePlayersReady;
     String playerName1;
     String playerName2;
-    String URL_QUESTION = "http://52.168.90.9:8081/random";
+    String URL_QUESTION = "http://52.168.90.9:8081/random"; //Azure
     Question currentQuestion;
     String currentPlayerName;
     int player1Point = 0;
     int player2Point = 0;
-    int totalPlayers = 0;
 
     public NwHelper(){
         arePlayersReady = false;
@@ -75,15 +74,9 @@ public class NwHelper {
 
     public SpeechletResponse SetPlayerNameIntent(Intent intent){
         playerName1 = intent.getSlot("PlayerNameOne").getValue();
-        if (playerName1 != null){
-            totalPlayers++;
-        }
         playerName2 = intent.getSlot("PlayerNameTwo").getValue();
-        if (playerName2 != null){
-            totalPlayers++;
-        }
 
-        String speechText = totalPlayers == 1? "Welcome" + playerName1 : "Welcome " +playerName1 +" and " + playerName2;
+        String speechText = "Welcome " +playerName1 +" and " + playerName2;
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         speech.setText(speechText + ". Are you ready to quiz?");
 
@@ -163,7 +156,7 @@ public class NwHelper {
             else{
                 player2Point++;
                 if(player1Point == 3){
-                    speech.setText("Congratulations " + playerName1 + "You have won!");
+                    speech.setText("Congratulations " + playerName2 + "You have won!");
                     return SpeechletResponse.newTellResponse(speech, card);
                 }
             }
