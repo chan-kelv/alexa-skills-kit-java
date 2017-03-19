@@ -26,6 +26,7 @@ public class NwHelper {
     int winPoints = 2;
     Question currentQuestion;
     String currentPlayerName;
+    boolean currentQuestionAnswered = true;
     int player1Point = 0;
     int player2Point = 0;
 
@@ -101,6 +102,20 @@ public class NwHelper {
 
             return SpeechletResponse.newAskResponse(speech, reprompt);
         }
+        if (!currentQuestionAnswered){
+            PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+            speech.setText(currentQuestion.term);
+
+            SimpleCard card = new SimpleCard();
+            card.setTitle(currentQuestion.term);
+            card.setContent(currentQuestion.definition);
+
+            PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
+            repromptSpeech.setText(currentQuestion.term);
+            Reprompt reprompt = new Reprompt();
+            reprompt.setOutputSpeech(repromptSpeech);
+            return SpeechletResponse.newAskResponse(speech, reprompt);
+        }
         String message = "could not get questions";
         try {
             StringBuilder result = new StringBuilder();
@@ -134,6 +149,8 @@ public class NwHelper {
         Reprompt reprompt = new Reprompt();
         reprompt.setOutputSpeech(repromptSpeech);
 
+        currentQuestionAnswered = false;
+
         return SpeechletResponse.newAskResponse(speech, reprompt, card);
     }
 
@@ -162,6 +179,8 @@ public class NwHelper {
             return SpeechletResponse.newAskResponse(speech, reprompt);
         }
 
+        currentQuestionAnswered = true;
+
         String speechText;
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
         if (currentQuestion.definition.equals(playerAnswer)){
@@ -182,7 +201,7 @@ public class NwHelper {
             }
         }
         else{
-            speechText = foundPlayer + "said" + playerAnswer+"The correct answer is ," + currentQuestion.definition;
+            speechText = foundPlayer + " said " + playerAnswer+", The correct answer is ," + currentQuestion.definition;
         }
         speech.setText(speechText
                         + playerName1 +"has " + player1Point + "points,"
