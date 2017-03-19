@@ -87,6 +87,12 @@ func InitializeDatabase() {
 	}
 	defer db.Close()
 
+	// Drop previously existing "questions" table.
+	if _, err := db.Exec(
+		"DROP TABLE Questions"); err != nil {
+		log.Fatal(err)
+	}
+
 	// Create the "questions" table.
 	if _, err := db.Exec(
 		"CREATE TABLE IF NOT EXISTS Questions (ID SERIAL PRIMARY KEY, Question varchar(1024), Answer varchar(1024), Type varchar(32))"); err != nil {

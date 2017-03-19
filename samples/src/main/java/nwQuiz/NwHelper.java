@@ -5,6 +5,7 @@ import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +21,7 @@ public class NwHelper {
     private static final Logger log = LoggerFactory.getLogger(NwHelper.class);
     boolean arePlayersReady;
     String playerName;
-//    String URL_QUESTION = "http://52.168.90.9:8080/random";
-    String URL_QUESTION = "https://httpbin.org/get";
+    String URL_QUESTION = "http://52.168.90.9:8081/random";
 
     public NwHelper(){
         arePlayersReady = false;
@@ -63,7 +63,10 @@ public class NwHelper {
                 result.append(line);
             }
             rd.close();
-            message = result.toString();
+
+            ObjectMapper mapper = new ObjectMapper();
+            Question q = mapper.readValue(result.toString(), Question.class);
+            message = q.term;
         }
         catch (Exception e){
             log.error("NWHelper", "read server error:" + e.getMessage());
