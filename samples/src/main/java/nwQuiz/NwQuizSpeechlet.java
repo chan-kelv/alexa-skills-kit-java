@@ -30,7 +30,7 @@ public class NwQuizSpeechlet implements Speechlet {
 
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
 //        speech.setText("Hello 2017 nw hack! Glad to have you here today.");
-        speech.setText("Hello.");
+        speech.setText("Hello NW hack 2017! Are you ready to battle?");
 
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
@@ -54,27 +54,27 @@ public class NwQuizSpeechlet implements Speechlet {
         Intent intent = intentRequest.getIntent();
         String intentName = (intent != null) ? intent.getName() : null;
 
-//        if ("NwQuiz".equals(intentName)){
-//            return nwHelper.PrepPlayersIntent();
-//        }
-//        else if ("GetReady".equals(intentName)){
-//            return nwHelper.ImReadyIntent();
-//        }
-        if ("ImReady".equals(intentName)){
-            return nwHelper.PlayersReadyIntent();
-        }
-        else if ("SayPlayerName".equals(intentName)){
-            return nwHelper.SayPlayerNameIntent();
-        }
-        else if ("SetPlayerName".equals(intentName)){
+        if ("SetPlayerName".equals(intentName)){
             return nwHelper.SetPlayerNameIntent(intent);
+        }
+//        else if ("SetPoints".equals(intentName)){
+//            return nwHelper.SetPointsToPlayTo(intent);
+//        }
+        else if ("Instructions".equals(intentName)){
+            return nwHelper.InstructionsIntent();
+        }
+        else if ("BuildJourney".equals(intentName)){
+            return nwHelper.BuildJourney();
         }
         else if ("StartQuiz".equals(intentName)){
             return nwHelper.StartQuizIntent();
         }
-        else if ("Answer".equals(intentName)){
-            return nwHelper.PlayerAnswer(intent);
-
+//        else if ("Answer".equals(intentName)){
+//            return nwHelper.PlayerAnswer(intent);
+//
+//        }
+        else if ("AnswerBattle".equals(intentName)){
+            return nwHelper.AnswerBattle(intent);
         }
         else {
             PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
@@ -83,7 +83,7 @@ public class NwQuizSpeechlet implements Speechlet {
             Reprompt reprompt = new Reprompt();
             reprompt.setOutputSpeech(speech);
 
-            return SpeechletResponse.newTellResponse(speech);
+            return SpeechletResponse.newAskResponse(speech, reprompt);
         }
     }
 

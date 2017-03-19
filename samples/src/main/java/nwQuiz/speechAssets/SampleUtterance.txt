@@ -1,12 +1,10 @@
-NwQuiz bubblegum
-GetReady get ready
-ImReady I'm ready
-SetPlayerName set player name
-SetPlayerName set {PlayerName}
-SetPlayerName set
-SayPlayerName tell me who is playing
+SetPlayerName set {PlayerNameOne} and {PlayerNameTwo}
 StartQuiz start
+StartQuiz ready
+StartQuiz yes
 Answer Who is {PlayerAnswer}
 Answer What is {PlayerAnswer}
 Answer When is {PlayerAnswer}
 Answer Where is {PlayerAnswer}
+AnswerBattle {PlayerName} {PlayerAnswer}
+SetPoints {ScoreToWin} points to win

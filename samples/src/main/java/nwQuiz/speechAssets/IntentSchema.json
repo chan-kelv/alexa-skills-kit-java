@@ -1,36 +1,49 @@
 {
   "intents": [
     {
-      "intent": "NwQuiz"
-    },
-    {
-      "intent": "GetReady"
-    },
-    {
-      "intent": "ImReady"
-    },
-    {
       "intent": "SetPlayerName",
       "slots": [
         {
-          "name": "PlayerName",
+          "name": "PlayerNameOne",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "PlayerNameTwo",
           "type": "AMAZON.US_FIRST_NAME"
         }
       ]
     },
     {
-      "intent": "SayPlayerName"
-    },
-    {
       "intent": "StartQuiz"
     },
     {
-      "intent":"Answer",
-      "slots":
-      [
+      "intent": "Answer",
+      "slots": [
         {
-          "name":"PlayerAnswer",
-          "type":"LIST_OF_ANSWERS"
+          "name": "PlayerAnswer",
+          "type": "LIST_OF_ANSWERS"
+        }
+      ]
+    },
+    {
+      "intent": "AnswerBattle",
+      "slots": [
+        {
+          "name": "PlayerName",
+          "type": "AMAZON.US_FIRST_NAME"
+        },
+        {
+          "name": "PlayerAnswer",
+          "type": "LIST_OF_ANSWERS"
+        }
+      ]
+    },
+    {
+      "intent": "SetPoints",
+      "slots": [
+        {
+          "name": "ScoreToWin",
+          "type": "LIST_OF_POINTS"
         }
       ]
     },
