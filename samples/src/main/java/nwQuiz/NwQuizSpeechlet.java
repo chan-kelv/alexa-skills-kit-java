@@ -29,7 +29,8 @@ public class NwQuizSpeechlet implements Speechlet {
                 session.getSessionId());
 
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText("Hello 2017 nw hack! Glad to have you here today.");
+//        speech.setText("Hello 2017 nw hack! Glad to have you here today.");
+        speech.setText("Hello.");
 
         // Create the Simple card content.
         SimpleCard card = new SimpleCard();
@@ -53,14 +54,23 @@ public class NwQuizSpeechlet implements Speechlet {
         Intent intent = intentRequest.getIntent();
         String intentName = (intent != null) ? intent.getName() : null;
 
-        if ("NwQuiz".equals(intentName)){
-            return nwHelper.PrepPlayersIntent();
-        }
-        else if ("GetReady".equals(intentName)){
-            return nwHelper.ImReadyIntent();
-        }
-        else if ("ImReady".equals(intentName)){
+//        if ("NwQuiz".equals(intentName)){
+//            return nwHelper.PrepPlayersIntent();
+//        }
+//        else if ("GetReady".equals(intentName)){
+//            return nwHelper.ImReadyIntent();
+//        }
+        if ("ImReady".equals(intentName)){
             return nwHelper.PlayersReadyIntent();
+        }
+        else if ("SayPlayerName".equals(intentName)){
+            return nwHelper.SayPlayerNameIntent();
+        }
+        else if ("SetPlayerName".equals(intentName)){
+            return nwHelper.SetPlayerNameIntent(intent);
+        }
+        else if ("StartQuiz".equals(intentName)){
+            return nwHelper.StartQuizIntent();
         }
 //        else if ("startQuiz".equals(intentName)){
 //            return nwHelper.StartQuizIntent();

@@ -1,18 +1,31 @@
 package nwQuiz;
 
+import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.SpeechletResponse;
 import com.amazon.speech.ui.PlainTextOutputSpeech;
 import com.amazon.speech.ui.Reprompt;
 import com.amazon.speech.ui.SimpleCard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by kelvinchan on 2017-03-19.
  */
 public class NwHelper {
+    private static final Logger log = LoggerFactory.getLogger(NwHelper.class);
     boolean arePlayersReady;
+    String playerName;
+//    String URL_QUESTION = "http://52.168.90.9:8080/random";
+    String URL_QUESTION = "https://httpbin.org/get";
 
     public NwHelper(){
         arePlayersReady = false;
+        playerName = "not set";
     }
 
     public SpeechletResponse PrepPlayersIntent() {
@@ -38,8 +51,26 @@ public class NwHelper {
     }
 
     public SpeechletResponse StartQuizIntent(){
+        String message = "could not get questions";
+        try {
+            StringBuilder result = new StringBuilder();
+            URL url = new URL(URL_QUESTION);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            rd.close();
+            message = result.toString();
+        }
+        catch (Exception e){
+            log.error("NWHelper", "read server error:" + e.getMessage());
+        }
+
         PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
-        speech.setText("Quiz starts in 5,4,3,2,1,GO!");
+        speech.setText(message);
         return SpeechletResponse.newTellResponse(speech);
     }
 
@@ -52,5 +83,32 @@ public class NwHelper {
     public SpeechletResponse PlayersReadyIntent(){
         arePlayersReady = true;
         return ImReadyIntent();
+    }
+
+    public SpeechletResponse SayPlayerNameIntent(){
+        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+        speech.setText("Welcome" + playerName);
+        return SpeechletResponse.newTellResponse(speech);
+    }
+
+    public SpeechletResponse SetPlayerNameIntent(Intent intent){
+        playerName = intent.getSlot("PlayerName").getValue();
+        PlainTextOutputSpeech speech = new PlainTextOutputSpeech();
+        speech.setText("Welcome " + playerName);
+
+        // Create reprompt
+        PlainTextOutputSpeech repromptSpeech = new PlainTextOutputSpeech();
+        String repromptText;
+        if (playerName == null){
+            repromptText = "Could not set name, please restart";
+        }
+        else{
+            repromptText = "Start game?";
+        }
+        repromptSpeech.setText(repromptText);
+        Reprompt reprompt = new Reprompt();
+        reprompt.setOutputSpeech(repromptSpeech);
+
+        return SpeechletResponse.newAskResponse(speech, reprompt);
     }
 }
